@@ -1,0 +1,96 @@
+.fa-truck {
+  font-size: 50px;
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+}
+
+.fa-user-secret {
+  font-size: 80px;
+  color: brown;
+}
+
+.track {
+  height: 55px;
+  width: auto;
+  background-image: url('../../assets/images/track.png');
+  position: relative;
+}
+
+.track_container {
+  margin: 20px auto;
+  padding: 0 82px 0 0;
+  width: 80%;
+  background: url('../../assets/images/racing-stripes.jpg') repeat-y 100% 0;
+  border-bottom: 3px solid #fff;
+  border-left: 3px solid #fff;
+}
+
+#truck-1 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-2 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-3 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-4 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-5 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-5 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-6 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-7 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+
+#truck-8 {
+  position: absolute;
+  top: 5px;
+  z-index: 999;
+}
+.truck.standRight {
+  background-position: 0px -128px;
+  width: 96px;
+  height: 60px;
+}
+
+.truck {
+  left: 0.5vw;
+}
+
+#funds {
+  color: #fff;
+  font-size: xx-large;
+}

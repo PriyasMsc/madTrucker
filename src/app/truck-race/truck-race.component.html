@@ -1,0 +1,249 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">Mad Tracker</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#collapsibleNavbar"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <button
+          type="button"
+          class="btn btn-warning"
+          (click)="startRace($event)"
+        >
+          Start Race
+        </button>
+      </li>
+      <li class="nav-item">
+        &nbsp;
+        <button
+          type="button"
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#placeBet"
+        >
+          Place Bet
+        </button>
+      </li>
+    </ul>
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#setUp"
+    >
+      Reset
+    </button>
+  </div>
+</nav>
+<div class="container">
+  <div class="text-center mt-3">
+    <i class="fa fa-user-secret" aria-hidden="true"> </i>
+    <p>
+      You currently have <i class="fa fa-usd" id="funds">{{ this.funds }}</i>
+    </p>
+    dfdfd {{ this.winnerTruck }}
+    <p>
+      The Win Truck is
+      <i class="fa fa-usd">{{ this.winnerTruckId }}</i>
+    </p>
+  </div>
+  <!--  <div id="truck2" class="truck standRight">
+    <i class="fa fa-truck" style="color: dark" aria-hidden="true"></i>
+  </div>
+  <div id="truck3" class="truck standRight">
+    <i class="fa fa-truck" style="color: blue" aria-hidden="true"></i>
+  </div>
+  <div id="truck4" class="truck standRight">
+    <i class="fa fa-truck" style="color: purple" aria-hidden="true"></i>
+  </div> -->
+
+  <div class="track_container">
+    <ng-container *ngFor="let truckList of listOfTruck">
+      <div class="track">
+        <div id="{{ truckList.truckId }}" class="truck standRight">
+          <i *ngIf="truckList.betAmount > 0" class="fa fa-usd" id="funds">{{
+            truckList.betAmount
+          }}</i>
+          <i
+            class="fa fa-truck"
+            [style.color]="truckList.color"
+            aria-hidden="true"
+          ></i>
+        </div>
+      </div>
+    </ng-container>
+    <!--  <div class="track"></div>
+    <div class="track"></div>
+    <div class="track"></div> -->
+  </div>
+
+  <!-- The Modal for Game Setup-->
+  <div class="modal fade" id="setUp">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Game Setup</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form novalidate #setUpForm="ngForm" class="was-validated">
+            <div class="form-group">
+              <label for="playerName">Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="playerName"
+                placeholder="Enter Player name"
+                name="playerName"
+                [(ngModel)]="playerName"
+                required
+              />
+              <!--  <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div> -->
+            </div>
+            <div class="form-group form-check">
+              <label class="form-check-label"> No of Truckers:</label>
+              <select
+                class="form-control"
+                id="truckCount"
+                [(ngModel)]="truckCount"
+                name="truckCount"
+              >
+                <option>2</option>
+                <option>4</option>
+                <option>6</option>
+                <option>8</option>
+              </select>
+              <!-- <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">
+                  Check this checkbox to continue.
+                </div> -->
+            </div>
+            <div class="form-group">
+              <label for="initialFund">Initial Funds:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="initialFund"
+                placeholder="Enter Initial Funds"
+                name="initialFund"
+                [(ngModel)]="initialFund"
+                required
+              />
+              <!--  <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div> -->
+            </div>
+            <button
+              type="submit"
+              (click)="onResetSubmit(setUpForm)"
+              class="btn btn-primary"
+              data-dismiss="modal"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal for Place Bet -->
+  <div class="modal fade" id="placeBet">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Place Bet</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form
+            novalidate
+            (ngSubmit)="onFormSubmit(betForm)"
+            #betForm="ngForm"
+            class="was-validated"
+          >
+            <ng-container *ngFor="let truckList of listOfTruck">
+              <div class="form-group">
+                <label for="betAmount"
+                  >{{ truckList.name }} - (
+                  {{ truckList.color | uppercase }} )</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="betAmount"
+                  placeholder="Enter betAmount"
+                  name="betAmount"
+                  [(ngModel)]="truckList.betAmount"
+                  required
+                />
+                <!--   <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div> -->
+              </div>
+            </ng-container>
+            <!--    <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input
+                type="password"
+                class="form-control"
+                id="pwd"
+                placeholder="Enter password"
+                name="pswd"
+                required
+              />
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            <div class="form-group form-check">
+              <label class="form-check-label">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="remember"
+                  required
+                />
+                I agree on blabla.
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">
+                  Check this checkbox to continue.
+                </div>
+              </label>
+            </div> -->
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">
+              Submit
+            </button>
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

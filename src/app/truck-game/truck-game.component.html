@@ -1,0 +1,202 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">Mad Tracker</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#collapsibleNavbar"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <button
+          type="button"
+          id="startRace"
+          class="btn btn-warning"
+          (click)="startRace($event)"
+        >
+          Start Race
+        </button>
+      </li>
+      <li class="nav-item">
+        &nbsp;
+        <button
+          type="button"
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#placeBetsetUp"
+          (click)="placeBet()"
+        >
+          Place Bet
+        </button>
+      </li>
+    </ul>
+    <button
+      type="button"
+      id="reset"
+      [disabled]="true"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#placeBetsetUp"
+      (click)="setUp()"
+    >
+      Reset
+    </button>
+  </div>
+</nav>
+<div class="container">
+  <div class="text-center mt-3">
+    <i class="fa fa-user-secret" aria-hidden="true"> </i>
+    <p>
+      You currently have
+      <i class="fa fa-usd" id="funds" *ngIf="this.defaultFund >= 0">{{
+        this.defaultFund
+      }}</i>
+    </p>
+
+    <!-- <p>
+      The Win Truck is
+      <i class="fa fa-usd">{{ this.winnerTruckId }}</i>
+    </p> -->
+  </div>
+  <div class="track_container">
+    <ng-container *ngFor="let truckList of listOfTruckCount">
+      <i
+        class="fa fa-usd"
+        style="position: relative; right: 110px; top: 15px"
+        id="funds"
+        *ngIf="truckList.betAmount >= 0"
+        >{{ truckList.betAmount }}</i
+      >
+
+      <div class="track">
+        <div id="{{ truckList.truckId }}" class="truck standRight">
+          <i
+            class="fa fa-truck"
+            [style.color]="truckList.color"
+            aria-hidden="true"
+          ></i>
+        </div>
+      </div>
+    </ng-container>
+    <!--  <div class="track"></div>
+    <div class="track"></div>
+    <div class="track"></div> -->
+  </div>
+  <!-- The Modal for Place Bet -->
+  <div class="modal fade" id="placeBetsetUp">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="placeBetModal == true">Place Bet</h4>
+          <h4 class="modal-title" *ngIf="setupModel == true">Setup</h4>
+
+          <button type="button" class="close" data-dismiss="modal" #modalBox>
+            &times;
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form
+            novalidate
+            (ngSubmit)="betForm.form.valid && onFormSubmit(betForm)"
+            #betForm="ngForm"
+            class="was-validated"
+          >
+            <div *ngIf="placeBetModal == true">
+              <ng-container *ngFor="let truckList of listOfTruckCount">
+                <div class="row">
+                  <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                      <label for="betAmount"
+                        >{{ truckList.name }} - (
+                        {{ truckList.color | uppercase }} )</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="betAmount"
+                        placeholder="Enter betAmount"
+                        name="betAmount"
+                        [(ngModel)]="truckList.betAmount"
+                        required
+                      />
+                      <!--   <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div> -->
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div *ngIf="setupModel == true">
+              <div class="row">
+                <div class="col-md-6 offset-md-3">
+                  <div class="form-group">
+                    <label for="playerName">Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="playerName"
+                      placeholder="Enter Player name"
+                      name="playerName"
+                      [(ngModel)]="playerName"
+                      required
+                    />
+                    <!--  <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div> -->
+                  </div>
+                  <div class="form-group">
+                    <label for="truckCount"> No of Truckers:</label>
+                    <select
+                      class="form-control"
+                      id="truckCount"
+                      [(ngModel)]="truckCount"
+                      name="truckCount"
+                    >
+                      <option>2</option>
+                      <option>4</option>
+                      <option>6</option>
+                      <option>8</option>
+                    </select>
+                    <!-- <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">
+                  Check this checkbox to continue.
+                </div> -->
+                  </div>
+                  <div class="form-group">
+                    <label for="defaultFund">Initial Funds:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="initialFund"
+                      placeholder="Enter Initial Funds"
+                      name="defaultFund"
+                      [(ngModel)]="defaultFund"
+                      required
+                    />
+                    <!--  <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary col-md-6 offset-md-3">
+              Submit
+            </button>
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
